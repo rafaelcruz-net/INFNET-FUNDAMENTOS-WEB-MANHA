@@ -1,0 +1,50 @@
+﻿
+@{
+    ViewData["Title"] = "AboutMe";
+}
+
+@model HelloWorld.Models.Teacher
+
+
+
+<h1><img src="@Model.Photo" width="60" height="60" /> @Model.Nome</h1>
+
+<ul>
+    <li>Email: @Model.Email</li>
+    <li>Data Nascimento: @Model.DtNascimento.ToString("dd/MM/yyyy")</li>
+    <li>Profissão: @Model.Profissao</li>
+    <li>Instituicao de Ensino: @Model.InstituicaoEnsino</li>
+
+    @if (!String.IsNullOrWhiteSpace(Model.Biografia))
+    {
+        <li><blockquote>Biografia: @Model.Biografia</blockquote></li>
+    }
+
+</ul>
+
+@if (Model.Turmas != null)
+{
+    <h4>Turmas do Professor</h4>
+    <table width="600px">
+        <thead>
+            <tr>
+                <th>Materia</th>
+                <th>Nome</th>
+                <th>Horário</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var turma in Model.Turmas)
+            {
+                <tr>
+                    <td>@turma.Materia</td>
+                    <td>@turma.Nome</td>
+                    <td>@turma.Horario</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+
+

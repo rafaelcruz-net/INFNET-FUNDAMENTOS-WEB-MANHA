@@ -1,0 +1,22 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+    <div class="text-center">
+        <h1 class="display-4">HELLO WORLD TURMA INFNET DESENVOLVIMENTO WEB</h1>
+        @for (int i = 0; i < 10; i++)
+        {
+            if (i % 2 == 0)
+            {
+                <span>Variavel I é Par</span>
+                <br />
+            }
+            else
+            {
+                <span>Variavel I é Impar</span>
+                <br />
+            }
+
+        }
+        <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    </div>
