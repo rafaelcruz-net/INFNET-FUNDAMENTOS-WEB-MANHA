@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HelloWorld.Controllers
 {
+    [Route("[controller]")]
     public class HelloController : Controller
     {
         public IActionResult Index()
@@ -14,6 +15,7 @@ namespace HelloWorld.Controllers
             return View();
         }
 
+        [Route("Conhecendo/{nome}/{ultimoNome}")]
         public IActionResult Interacao(string nome, string ultimoNome)
         {
             if (!String.IsNullOrWhiteSpace(nome) && !String.IsNullOrWhiteSpace(ultimoNome))
@@ -25,6 +27,7 @@ namespace HelloWorld.Controllers
             return View();
         }
 
+        [Route("AboutMe")]
         public IActionResult AboutMe()
         {
             Teacher teacher = new Teacher()
@@ -34,25 +37,48 @@ namespace HelloWorld.Controllers
                 Biografia = "Lorem Ipsum Lorem Ipsum Lorem Ipsum",
                 Email = "rafael.cruz@prof.infnet.edu.br",
                 InstituicaoEnsino = "Infnet",
-                Profissao = "Professor"
+                Profissao = "Professor",
+                Login = "rafael.cruz"
             };
 
             teacher.Turmas.Add(new Turma()
             {
                 Nome = "Projeto de Bloco",
                 Horario = "07:00-9:30",
-                Materia = "Projeto de Bloco .NET"
+                Materia = "Projeto de Bloco .NET",
+                Codigo = "20GRPEDC01BNT504"
             });
 
             teacher.Turmas.Add(new Turma()
             {
                 Nome = "Fundamentos da Web - ASP.NET",
                 Horario = "07:00-9:30",
-                Materia = "Fundamentos do Desenvolvimento de Aplicações Web ASP.NET"
+                Materia = "Fundamentos do Desenvolvimento de Aplicações Web ASP.NET",
+                Codigo = "20GRPEDC01BNT204"
+
             });
 
-
             return View(teacher);
+        }
+        
+        [Route("{loginProfessor}/{codigoMateria}/Students")]
+        public IActionResult Students(String loginProfessor, String codigoMateria)
+        {
+            List<Student> students = new List<Student>();
+
+            for (int i = 1; i <= 10; i++)
+            {
+                students.Add(new Student()
+                {
+                    CodigoTurma = codigoMateria,
+                    LoginProfessor = loginProfessor,
+                    Email = $"fulano{i}_{codigoMateria}@teste.com.br",
+                    Nome = $"fulano{i}_{codigoMateria}",
+                });
+            }
+
+            return View(students);
+       
         }
 
     }

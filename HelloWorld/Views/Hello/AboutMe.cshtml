@@ -5,8 +5,6 @@
 
 @model HelloWorld.Models.Teacher
 
-
-
 <h1><img src="@Model.Photo" width="60" height="60" /> @Model.Nome</h1>
 
 <ul>
@@ -25,12 +23,13 @@
 @if (Model.Turmas != null)
 {
     <h4>Turmas do Professor</h4>
-    <table width="600px">
+    <table width="100%" border="1">
         <thead>
             <tr>
                 <th>Materia</th>
                 <th>Nome</th>
                 <th>Horário</th>
+                <th>Ação</th>
             </tr>
         </thead>
         <tbody>
@@ -40,6 +39,7 @@
                     <td>@turma.Materia</td>
                     <td>@turma.Nome</td>
                     <td>@turma.Horario</td>
+                    <td><a href="@Model.Login/@turma.Codigo/Students">ver alunos</a></td>
                 </tr>
             }
         </tbody>
