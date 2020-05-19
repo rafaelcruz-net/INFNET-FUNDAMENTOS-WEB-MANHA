@@ -12,5 +12,6 @@ namespace HelloWorld.Models
         public String Horario { get; set; }
 
         public String Codigo { get; set; }
+        public String Professor { get; set; }
     }
 }
