@@ -9,41 +9,26 @@ namespace HelloWorld.Controllers
 {
     public class TodoController : Controller
     {
+        public static List<Todo> Todos { get; set; } = new List<Todo>();
+
         public IActionResult Index()
         {
-            List<Todo> todos = new List<Todo>();
-
-            todos.Add(new Todo()
-            {
-                Nome = "Ver Email Trabalho",
-                Concluido = true
-            });
-
-            todos.Add(new Todo()
-            {
-                Nome = "Marcar dentista",
-                Concluido = false
-            });
-
-            todos.Add(new Todo()
-            {
-                Nome = "Fazer trabalho TP 3",
-                Concluido = false
-            });
-
-            todos.Add(new Todo()
-            {
-                Nome = "Limpar a louça",
-                Concluido = true
-            });
-
-
-            return View(todos);
+            return View(Todos);
         }
 
         public IActionResult New()
         {
             return View();
+        }
+
+        [HttpPost]
+        public IActionResult Save(Todo model)
+        {
+            if (ModelState.IsValid == false)
+                return View();
+
+            Todos.Add(model);
+            return RedirectToAction("Index", "Todo");
         }
     }
 }
