@@ -21,8 +21,7 @@ namespace HelloWorld.Controllers
         {
             return View();
         }
-
-
+        
         public IActionResult Edit([FromQuery] Guid id)
         {
             var todo = Todos.Where(x => x.Id == id).FirstOrDefault();
