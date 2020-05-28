@@ -7,11 +7,19 @@
 
 <h1>Minhas Tarefas</h1>
 
+@if (!String.IsNullOrEmpty(ViewBag.Message))
+{
+    <div class="alert alert-success" role="alert">
+        @ViewBag.Message
+    </div>
+}
+
 <table width="100%" border="1">
     <thead>
         <tr>
             <th>Nome da Tarefa</th>
             <th>Concluída?</th>
+            <th>Ação</th>
         </tr>
     </thead>
     <tbody>
@@ -20,6 +28,9 @@
             <tr>
                 <td>@todo.Nome</td>
                 <td>@(todo.Concluido ? "Sim" : "Não")</td>
+                <td>
+                    <a class="btn btn-warning btn-sm" href="/Todo/Edit?id=@todo.Id">Editar Tarefa</a>
+                </td>
             </tr>
         }
     </tbody>
