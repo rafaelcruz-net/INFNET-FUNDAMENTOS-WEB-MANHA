@@ -29,6 +29,14 @@ namespace HelloWorld.Controllers
             return View(todo);
         }
 
+        public IActionResult Delete([FromQuery] Guid id)
+        {
+            var todo = Todos.Where(x => x.Id == id).FirstOrDefault();
+
+            return View(todo);
+        }
+
+
         [HttpPost]
         public IActionResult Save(Todo model)
         {
@@ -59,6 +67,19 @@ namespace HelloWorld.Controllers
             Todos.Add(todoEdit);
 
             return RedirectToAction("Index", "Todo", new { message = "Tarefa editada com sucesso" });
+        }
+
+        [HttpPost]
+        public IActionResult DeleteTask(Guid id)
+        {
+            if (ModelState.IsValid == false)
+                return View();
+
+            var todo = Todos.Where(x => x.Id == id).FirstOrDefault();
+
+            Todos.Remove(todo);
+
+            return RedirectToAction("Index", "Todo", new { message = "Tarefa excluída com sucesso" });
         }
 
 

@@ -1,0 +1,16 @@
+﻿
+@{
+    ViewData["Title"] = "Delete";
+}
+
+@model Todo
+
+<h1>Gostaria de excluir a tarefa @Model.Nome?</h1>
+
+<form method="post" asp-action="DeleteTask" asp-controller="Todo" asp-route-id="@Model.Id">
+    <a href="/todo" class="btn btn-default">Cancelar</a>
+    <button type="submit" class="btn btn-danger">Excluir tarefa</button>
+</form>
+
+
+

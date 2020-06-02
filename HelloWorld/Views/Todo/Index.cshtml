@@ -30,6 +30,7 @@
                 <td>@(todo.Concluido ? "Sim" : "Não")</td>
                 <td>
                     <a class="btn btn-warning btn-sm" href="/Todo/Edit?id=@todo.Id">Editar Tarefa</a>
+                    <a class="btn btn-danger btn-sm" href="/Todo/Delete?id=@todo.Id">Excluir Tarefa</a>
                 </td>
             </tr>
         }
