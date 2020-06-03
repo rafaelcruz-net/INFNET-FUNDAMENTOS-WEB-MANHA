@@ -60,7 +60,47 @@ namespace HelloWorld.Controllers
 
             return View(teacher);
         }
-        
+        [Route("AboutMe1")]
+        public IActionResult AboutMe1()
+        {
+            Teacher AlunoAbout = new Teacher()
+            {
+                Nome = "Natan Borges",
+                DtNascimento = new DateTime(2000, 12, 21),
+                Biografia = "Lorem Ipsum Lorem Ipsum Lorem Ipsum",
+                Email = "natan.borges.al@infnet.edu.br",
+                InstituicaoEnsino = "Infnet",
+                Profissao = "estudante",
+                Login = "natan.borges"
+            };
+
+            AlunoAbout.Turmas.Add(new Turma()
+            {
+                Nome = "Projeto de Bloco",
+                Horario = "07:00-9:30",
+                Materia = "Projeto de Bloco .NET",
+                Professor = "Rafael Cruz"
+            });
+            AlunoAbout.Turmas.Add(new Turma()
+            {
+                Nome = "Fundamentos C#",
+                Horario = "07:00-9:30",
+                Materia = "Fundamentos C#",
+                Professor = "Vitor Fitzner"
+            });
+
+            AlunoAbout.Turmas.Add(new Turma()
+            {
+                Nome = "Fundamentos da Web - ASP.NET",
+                Horario = "07:00-9:30",
+                Materia = "Fundamentos do Desenvolvimento de Aplicações Web ASP.NET",
+                Professor = "Rafael Cruz"
+
+            });
+
+            return View(AlunoAbout);
+        }
+
         [Route("{loginProfessor}/{codigoMateria}/Students")]
         public IActionResult Students(String loginProfessor, String codigoMateria)
         {
