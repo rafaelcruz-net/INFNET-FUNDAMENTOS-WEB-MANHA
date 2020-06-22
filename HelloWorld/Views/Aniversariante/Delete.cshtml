@@ -1,0 +1,16 @@
+﻿
+@{
+    ViewData["Title"] = "Delete";
+}
+
+@model Aniversariante
+
+<h1>Gostaria de excluir o aniversariante @Model.primeiroNome @Model.segundoNome?</h1>
+
+<form method="post" asp-action="DeleteTask" asp-controller="Aniversariante" asp-route-id="@Model.Id">
+    <a href="/Aniversariante" class="btn btn-secondary">Cancelar</a>
+    <button type="submit" class="btn btn-danger">Excluir Aniversariante</button>
+</form>
+
+
+

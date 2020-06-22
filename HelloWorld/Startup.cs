@@ -53,7 +53,7 @@ namespace HelloWorld
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Aniversariante}/{action=Index}/{id?}");
             });
         }
     }

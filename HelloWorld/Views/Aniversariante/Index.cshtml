@@ -1,0 +1,101 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+}
+
+@model List<Aniversariante>
+
+<h1>Aniversariantes do Dia</h1>
+
+@if (!String.IsNullOrEmpty(ViewBag.Message))
+{
+    <div class="alert alert-success" role="alert">
+        @ViewBag.Message
+    </div>
+}
+<div>
+    <h5>Filtrar por Nome ou Sobrenome</h5>
+
+    <div>
+        @using (Html.BeginForm())
+        {
+            <p class="fixbut">
+                Nome: @Html.TextBox("SearchName")
+                <input type="submit" value="Pesquisa" />
+            </p>
+        }
+    </div>
+</div>
+
+<table class="table table-striped table-hover">
+    <thead>
+        <tr>
+            <th>Primeiro nome</th>
+            <th>Segundo nome</th>
+            <th>Data de aniversario</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var aniversariante in Model)
+        {
+            DateTime datadehoje = DateTime.Now;
+
+            int difData = (datadehoje.Date - aniversariante.dataAniversario.Date).Days;
+            var diasParaAnos = (difData / 365 + 1);
+
+            DateTime datefinal = aniversariante.dataAniversario.AddYears(diasParaAnos);
+
+            int resultadoAniversario = (datefinal.Date - datadehoje.Date).Days;
+            if (resultadoAniversario == 365)
+            {
+                <tr>
+                    <td>@aniversariante.primeiroNome</td>
+                    <td>@aniversariante.segundoNome</td>
+                    <td>@aniversariante.dataAniversario</td>
+                    <td>
+                        <a class="btn btn-warning btn-sm" href="/Todo/Edit?id=@aniversariante.Id">Editar Tarefa</a>
+                        <a class="btn btn-danger btn-sm" href="/Todo/Delete?id=@aniversariante.Id">Excluir Tarefa</a>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+<h1>Aniversariantes Cadastrados</h1>
+
+<table class="table table-striped table-hover">
+    <thead>
+        <tr>
+            <th>Primeiro nome</th>
+            <th>Segundo nome</th>
+            <th>Data de aniversario</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var aniversariante in Model)
+        {
+            <tr>
+                <td>@aniversariante.primeiroNome</td>
+                <td>@aniversariante.segundoNome</td>
+                <td>@aniversariante.dataAniversario</td>
+                <td>
+                    <a class="btn btn-warning btn-sm" href="/Todo/Edit?id=@aniversariante.Id">Editar Tarefa</a>
+                    <a class="btn btn-danger btn-sm" href="/Todo/Delete?id=@aniversariante.Id">Excluir Tarefa</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<br />
+
+<div>
+    <a class="btn btn-primary" asp-controller="Aniversariante" asp-action="New">Cadastrar novo aniversariante</a>
+</div>
+
+<style>
+    input{
+        border-radius: 5px;
+    }
+</style>

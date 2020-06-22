@@ -1,0 +1,32 @@
+﻿
+@{
+    ViewData["Title"] = "Pesquisa";
+}
+
+@model Aniversariante
+
+
+<h1>Resultado da Busca</h1>
+
+
+<ul>
+    <li> Nome: @Model.primeiroNome @Model.segundoNome</li>
+    <li> Data de Nascimento: @Model.dataAniversario</li>
+</ul>
+
+
+
+
+
+<style>
+
+    h1 {
+        text-align: center;
+    }
+
+    ul {
+        border: 1px solid black;
+        width: 400px;
+        margin: 0 auto;
+    }
+</style>

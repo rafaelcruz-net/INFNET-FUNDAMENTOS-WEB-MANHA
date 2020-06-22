@@ -17,22 +17,24 @@ namespace HelloWorld.Repository
             this.ConnectionString = configuration.GetConnectionString("TodoConnection");
         }
 
-        public void Save(Todo todo)
+        public void Save(Aniversariante aniversariante)
         {
             using (var connection = new SqlConnection(this.ConnectionString))
             {
-                var sql = @" INSERT INTO TASK(Id, NomeTarefa, Concluido)
-                             VALUES (@P1, @P2, @P3)
+                var sql = @" INSERT INTO TASK(Id, primeiroNome, segundoNome, dataAniversario)
+                             VALUES (@P1, @P2, @P3, @P4)
                 ";
 
                 if (connection.State != System.Data.ConnectionState.Open)
                     connection.Open();
-                
+
                 SqlCommand sqlCommand = connection.CreateCommand();
                 sqlCommand.CommandText = sql;
-                sqlCommand.Parameters.AddWithValue("P1", todo.Id);
-                sqlCommand.Parameters.AddWithValue("P2", todo.Nome);
-                sqlCommand.Parameters.AddWithValue("P3", todo.Concluido);
+                sqlCommand.Parameters.AddWithValue("P1", aniversariante.Id);
+                sqlCommand.Parameters.AddWithValue("P2", aniversariante.primeiroNome);
+                sqlCommand.Parameters.AddWithValue("P3", aniversariante.segundoNome);
+                sqlCommand.Parameters.AddWithValue("P4", aniversariante.dataAniversario);
+
 
                 sqlCommand.ExecuteNonQuery();
 
@@ -40,14 +42,15 @@ namespace HelloWorld.Repository
             }
         }
 
-        public void Update(Todo todo)
+        public void Update(Aniversariante aniversariante)
         {
             using (var connection = new SqlConnection(this.ConnectionString))
             {
 
+
                 var sql = @" UPDATE TASK 
-                             SET NomeTarefa = @P1,
-                             Concluido = @P2
+                             SET primeiroNome = @P1,
+                             segundoNome = @P2
                              WHERE Id = @P3 
                 ";
 
@@ -56,9 +59,9 @@ namespace HelloWorld.Repository
 
                 SqlCommand sqlCommand = connection.CreateCommand();
                 sqlCommand.CommandText = sql;
-                sqlCommand.Parameters.AddWithValue("P1", todo.Nome);
-                sqlCommand.Parameters.AddWithValue("P2", todo.Concluido);
-                sqlCommand.Parameters.AddWithValue("P3", todo.Id);
+                sqlCommand.Parameters.AddWithValue("P1", aniversariante.primeiroNome);
+                sqlCommand.Parameters.AddWithValue("P2", aniversariante.segundoNome);
+                sqlCommand.Parameters.AddWithValue("P3", aniversariante.Id);
                 sqlCommand.ExecuteNonQuery();
 
                 connection.Close();
@@ -86,14 +89,14 @@ namespace HelloWorld.Repository
             }
         }
 
-        public List<Todo> GetAll()
+        public List<Aniversariante> GetAll()
         {
-            List<Todo> result = new List<Todo>(); 
+            List<Aniversariante> result = new List<Aniversariante>();
 
             using (var connection = new SqlConnection(this.ConnectionString))
             {
 
-                var sql = @" SELECT Id, NomeTarefa, Concluido FROM TASK";
+                var sql = @" SELECT Id, primeiroNome, segundoNome, dataAniversario FROM TASK ORDER BY dataAniversario DESC";
 
                 if (connection.State != System.Data.ConnectionState.Open)
                     connection.Open();
@@ -105,14 +108,15 @@ namespace HelloWorld.Repository
 
                 while (reader.Read())
                 {
-                    Todo todo = new Todo()
+                    Aniversariante aniversariante = new Aniversariante()
                     {
                         Id = Guid.Parse(reader["Id"].ToString()),
-                        Nome = reader["NomeTarefa"].ToString(),
-                        Concluido = Convert.ToBoolean(reader["Concluido"])
+                        primeiroNome = reader["primeiroNome"].ToString(),
+                        segundoNome = reader["segundoNome"].ToString(),
+                        dataAniversario = Convert.ToDateTime(reader["dataAniversario"])
                     };
 
-                    result.Add(todo);
+                    result.Add(aniversariante);
                 }
 
                 connection.Close();
@@ -121,14 +125,14 @@ namespace HelloWorld.Repository
             return result;
         }
 
-        public Todo GetById(Guid id)
+        public Aniversariante GetById(Guid id)
         {
-            List<Todo> result = new List<Todo>();
+            List<Aniversariante> result = new List<Aniversariante>();
 
             using (var connection = new SqlConnection(this.ConnectionString))
             {
 
-                var sql = @" SELECT Id, NomeTarefa, Concluido 
+                var sql = @" SELECT Id, primeiroNome, segundoNome, dataAniversario 
                              FROM TASK
                              WHERE Id = @P1
                 ";
@@ -144,14 +148,15 @@ namespace HelloWorld.Repository
 
                 while (reader.Read())
                 {
-                    Todo todo = new Todo()
+                    Aniversariante aniversariante = new Aniversariante()
                     {
                         Id = Guid.Parse(reader["Id"].ToString()),
-                        Nome = reader["NomeTarefa"].ToString(),
-                        Concluido = Convert.ToBoolean(reader["Concluido"])
+                        primeiroNome = reader["primeiroNome"].ToString(),
+                        segundoNome = reader["segundoNome"].ToString(),
+                        dataAniversario = DateTime.Parse(reader["dataAniversario"].ToString())
                     };
 
-                    result.Add(todo);
+                    result.Add(aniversariante);
                 }
 
                 connection.Close();
@@ -159,8 +164,40 @@ namespace HelloWorld.Repository
 
             return result.FirstOrDefault();
         }
+        public List<Aniversariante> Pesquisar(string nome)
+        {
+            List<Aniversariante> todos = new List<Aniversariante>();
+
+            using (var connection = new SqlConnection(this.ConnectionString))
+            {
+                if (connection.State != System.Data.ConnectionState.Open)
+                    connection.Open();
+
+                SqlCommand sqlcommand = connection.CreateCommand();
+
+                sqlcommand.CommandText = "SELECT Id, primeiroNome, segundoNome, dataAniversario FROM TASK WHERE primeiroNome LIKE '%'+@P1+'%'";
+                sqlcommand.Parameters.AddWithValue("P1", nome);
+
+                SqlDataReader reader = sqlcommand.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    Aniversariante aniversariante = new Aniversariante()
+                    {
+                        Id = Guid.Parse(reader["Id"].ToString()),
+                        primeiroNome = reader["primeiroNome"].ToString().Split(" ").First(),
+                        segundoNome = reader["segundoNome"].ToString().Split(" ").Last(),
+                        dataAniversario = DateTime.Parse(reader["dataAniversario"].ToString())
+                    };
+                    todos.Add(aniversariante);
+                }
 
 
+                connection.Close();
 
+            }
+            return todos;
+
+        }
     }
 }

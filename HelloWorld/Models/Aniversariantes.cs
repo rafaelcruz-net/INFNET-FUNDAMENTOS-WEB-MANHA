@@ -6,12 +6,14 @@ using System.Threading.Tasks;
 
 namespace HelloWorld.Models
 {
-    public class Todo
+    public class Aniversariante
     {
         public Guid Id { get; set; }
 
         [Required(ErrorMessage = "Campo nome da tarefa deve ser preenchido")]
-        public String Nome { get; set; }
-        public bool Concluido { get; set; }
+        public String primeiroNome { get; set; }
+        public String segundoNome { get; set; }
+        public DateTime dataAniversario { get; set; }
+
     }
 }

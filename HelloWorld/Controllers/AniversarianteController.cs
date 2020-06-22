@@ -8,17 +8,25 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HelloWorld.Controllers
 {
-    public class TodoController : Controller
+    public class AniversarianteController : Controller
     {
         private TodoRepository TodoRepository { get; set; }
 
-        public TodoController(TodoRepository todoRepository)
+        public AniversarianteController(TodoRepository todoRepository)
         {
             this.TodoRepository = todoRepository;
         }
 
-        public IActionResult Index(string? message)
+        public IActionResult Index(string? message, string? searchName)
         {
+            ViewBag.Message = message;
+
+            if (!String.IsNullOrEmpty(searchName))
+            {
+                var Encontrados = TodoRepository.Pesquisar(searchName);
+                return View(Encontrados);
+            }
+            //https://stackoverflow.com/questions/37845354/creating-a-search-bar-c-sharp-mvc// 
             var result = this.TodoRepository.GetAll();
             ViewBag.Message = message;
             return View(result);
@@ -31,20 +39,20 @@ namespace HelloWorld.Controllers
         
         public IActionResult Edit([FromQuery] Guid id)
         {
-            var todo = TodoRepository.GetById(id);
+            var Aniversariante = TodoRepository.GetById(id);
 
-            return View(todo);
+            return View(Aniversariante);
         }
 
         public IActionResult Delete([FromQuery] Guid id)
         {
-            var todo = TodoRepository.GetById(id);
-            return View(todo);
+            var aniversariante = TodoRepository.GetById(id);
+            return View(aniversariante);
         }
 
 
         [HttpPost]
-        public IActionResult Save(Todo model)
+        public IActionResult Save(Aniversariante model)
         {
             if (ModelState.IsValid == false)
                 return View();
@@ -55,23 +63,24 @@ namespace HelloWorld.Controllers
             //Adicionando na "Tabela"
             TodoRepository.Save(model);
 
-            return RedirectToAction("Index", "Todo", new { message = "Tarefa cadastrada com sucesso" });
+            return RedirectToAction("Index", "Aniversariante", new { message = "Aniversariante cadastrado com sucesso" });
         }
 
         [HttpPost]
-        public IActionResult SaveEdit(Guid id, Todo model)
+        public IActionResult SaveEdit(Guid id, Aniversariante model)
         {
             if (ModelState.IsValid == false)
                 return View();
 
             var todoEdit = TodoRepository.GetById(id);
 
-            todoEdit.Nome = model.Nome;
-            todoEdit.Concluido = model.Concluido;
+            todoEdit.primeiroNome = model.primeiroNome;
+            todoEdit.segundoNome = model.segundoNome;
+            Convert.ToString(todoEdit.dataAniversario = model.dataAniversario);
 
             TodoRepository.Update(todoEdit);
 
-            return RedirectToAction("Index", "Todo", new { message = "Tarefa editada com sucesso" });
+            return RedirectToAction("Index", "Aniversariante", new { message = "Aniversariante editado com sucesso" });
         }
 
         [HttpPost]
@@ -82,7 +91,7 @@ namespace HelloWorld.Controllers
 
             TodoRepository.Delete(id);
 
-            return RedirectToAction("Index", "Todo", new { message = "Tarefa excluída com sucesso" });
+            return RedirectToAction("Index", "Aniversariante", new { message = "Aniversariante excluído com sucesso" });
         }
 
 
